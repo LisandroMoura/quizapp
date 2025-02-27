@@ -1,29 +1,29 @@
 services:
 
-  backend:
-    image: eduardomourag/pandorarh-back
-    container_name: laravel_backend
-    ports:
-      - "8000:8000"  # Mapeia a porta 8000 do host para o container
-    volumes:
-      - ./backend:/var/www/html  # Monta o código local no container
-    command: >
-      sh -c "composer install --no-dev --optimize-autoloader &&
-             php artisan serve --host=0.0.0.0 --port=8000"
-    environment:
-      - APP_ENV=local
-      - APP_DEBUG=true
-      - DB_CONNECTION=sqlite
-      - DB_DATABASE=/var/www/html/database/database.sqlite
-    networks:
-      - app-network
+  # backend:
+  #   image: eduardomourag/pandorarh-back
+  #   container_name: laravel_backend
+  #   ports:
+  #     - "8000:8000"  # Mapeia a porta 8000 do host para o container
+  #   volumes:
+  #     - ./backend:/var/www/html  # Monta o código local no container
+  #   command: >
+  #     sh -c "composer install --no-dev --optimize-autoloader &&
+  #            php artisan serve --host=0.0.0.0 --port=8000"
+  #   environment:
+  #     - APP_ENV=local
+  #     - APP_DEBUG=true
+  #     - DB_CONNECTION=sqlite
+  #     - DB_DATABASE=/var/www/html/database/database.sqlite
+  #   networks:
+  #     - app-network
   frontend:
-     image: eduardomourag/pandorarh-front     
-     container_name: nuxt_frontend
+     image: eduardomourag/quizapp-front     
+     container_name: quizapp_nuxt_frontend
      ports:
        - "3000:3000"  # Porta padrão do Nuxt.js
      volumes:
-       - ./frontend:/app  # Monta o código local no container
+       - ./nuxt-front:/app  # Monta o código local no container
      command: >
       sh -c "npm install --omit=dev && npm run build &&
              npm run preview --host=0.0.0.0 --port=3000"
