@@ -5,14 +5,13 @@
 
     <form @submit.prevent="submitForm" class="space-y-6">
       <!-- TODO: Criar componentes customizados para cada tipo de campo do formulário -->
-       campos do formulário
+      campos do formulário
 
     </form>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { Quiz } from '~/interfaces/quiz';
 
 
 /*/////////////////////////// DEFINIÇÕES ///////////////////////////////////*/
@@ -27,25 +26,18 @@ const props = defineProps({
 });
 
 // Objeto reativo para armazenar os dados do formulário
-const form: Quiz= reactive({
-  id: 0,
-  title: "",
-  description: "",
-  type: "",
-  // body: "",
-  // status: "",
-  // rg: "",
-  // data_nascimento: "",
-  // genero: "Não informado",
-  // cep: "",
-  // endereco: "",
-  // cargo_id: 1,
-  // salario: 0,
-  // email: "",
-  // telefone: "",
-});
-
-
+import type { Quiz } from '~/interfaces/quiz';
+const form: Quiz = reactive(
+    {
+      id: 0,
+      title: "",
+      description: "",
+      type: "",
+      body: "",
+      numberOptions: 5,
+      status: ''
+    }
+  );
 
 // opções default para select de type
 const optionsType = [
@@ -81,7 +73,7 @@ const submitForm = () => {
 const validateForm = () => {
   // Validar formulário
   console.log("Formulário validado");
-  return true;  
+  return true;
 }
 
 /**
