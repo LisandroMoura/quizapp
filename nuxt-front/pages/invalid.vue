@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <h3>invalid</h3>
+        <h3>Esta página é inválida</h3>
     </div>
 </template>
 

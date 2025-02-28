@@ -35,9 +35,9 @@ const id: Ref<Number> = ref(Number(useRoute().params.id));
 
 const title: Ref<String> = ref("Qual o seu temperamento?");
 
-  definePageMeta({
-    middleware: "only-numbers",
-  });
+  // definePageMeta({
+  //   middleware: "only-numbers",
+  // });
 
 // Provisória descrição
 const description: Ref<String> = ref("Faça esse incível teste (quiz) e descubra se o seu temperamento é Colérico, Melancólico, Fleumático ou Sangüíneo.");
