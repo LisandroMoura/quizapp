@@ -3,4 +3,7 @@ export interface Quiz {
     title: string;
     description: string;
     type: string;
+    body: String | null;
+    numberOptions: number ;
+    status  : string;
 }
