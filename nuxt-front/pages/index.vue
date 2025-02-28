@@ -112,6 +112,12 @@
 <script setup lang="ts">
 
 const runtimeConfig = useRuntimeConfig()
+// const { data } = await useFetch('/api/quizzes', {
+//     baseURL: runtimeConfig.public.apiBase,
+//     headers: {
+//         Authorization: `Bearer ${useCookie('token').value}`
+//     }
+// })
 </script>
 
 <style lang="scss" scoped></style>
