@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
   compatibilityDate: '2024-11-01',
-
+  components: true, 
   app: {
     head: {
       title: 'Quiz App - Gestão de sistema de quiz',
