@@ -1,0 +1,24 @@
+meta {
+  name: update
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:8000/api/quiz/1
+  body: json
+  auth: none
+}
+
+body:json {
+    {
+      "title": "vamos alterar o titulo",
+      "description": "que tal descobrir Um novo teste para voce",
+      "type": 2,
+      "body": "esse teste é bacana",
+      "number_options": 5,
+      "status": 1,
+      "created_at": null,
+      "updated_at": null
+    }
+}

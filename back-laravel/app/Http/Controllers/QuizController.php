@@ -22,6 +22,10 @@ class QuizController extends Controller
     public function store(Request $request)
     {
         //
+        $cargo = Quiz::create($request->all());
+
+        // retornar os dados 
+        return response()->json(compact('cargo'), 201);
     }
 
     /**
@@ -29,7 +33,7 @@ class QuizController extends Controller
      */
     public function show(Quiz $quiz)
     {
-        //
+        return response()->json(compact('quiz'), 200);
     }
 
     /**
@@ -37,7 +41,8 @@ class QuizController extends Controller
      */
     public function update(Request $request, Quiz $quiz)
     {
-        //
+        $quiz->update($request->all());
+        return response()->json(compact("quiz"), 200);
     }
 
     /**
@@ -45,6 +50,9 @@ class QuizController extends Controller
      */
     public function destroy(Quiz $quiz)
     {
-        //
+        $quiz->delete($quiz);
+        return response()->json([
+            "message" => "cargo deletado com sucesso",
+        ], 200);
     }
 }
