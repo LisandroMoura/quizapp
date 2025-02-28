@@ -12,8 +12,13 @@
 </template>
 
 <script lang="ts" setup>
+import type { Quiz } from '~/interfaces/quiz';
+
 
 /*/////////////////////////// DEFINIÇÕES ///////////////////////////////////*/
+
+// Pegar o ID da rota
+const id: Ref<Number> = ref(Number(useRoute().params.id));
 
 // definição das Props
 const props = defineProps({
@@ -22,23 +27,25 @@ const props = defineProps({
 });
 
 // Objeto reativo para armazenar os dados do formulário
-const form = reactive({
-  id: "",
+const form: Quiz= reactive({
+  id: 0,
   title: "",
   description: "",
   type: "",
-  body: "",
-  status: "",
-  rg: "",
-  data_nascimento: "",
-  genero: "Não informado",
-  cep: "",
-  endereco: "",
-  cargo_id: 1,
-  salario: 0,
-  email: "",
-  telefone: "",
+  // body: "",
+  // status: "",
+  // rg: "",
+  // data_nascimento: "",
+  // genero: "Não informado",
+  // cep: "",
+  // endereco: "",
+  // cargo_id: 1,
+  // salario: 0,
+  // email: "",
+  // telefone: "",
 });
+
+
 
 // opções default para select de type
 const optionsType = [
