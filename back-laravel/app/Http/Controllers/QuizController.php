@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Quiz;
 use Illuminate\Http\Request;
+use Illuminate\Support\Js;
 
 class QuizController extends Controller
 {
@@ -12,7 +13,7 @@ class QuizController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Quiz::orderBy('id', 'desc')->get());
     }
 
     /**
