@@ -81,7 +81,6 @@ const quizzes: Ref<Quiz[]> = ref([]);
 // Função para buscar os quizzes
 import { $fetch } from 'ofetch'
 const fetchQuizzes = async () => {
-  console.log("mounted");
   
   try {
     const apiUrl = `${runtimeConfig.public.apiBaseUrl}/quiz`;
