@@ -17,7 +17,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="quiz in quizs" :key="quiz.id" class="hover:bg-gray-100">
+                    <tr v-for="quiz in quizzes" :key="quiz.id" class="hover:bg-gray-100">
                         <td class="py-2 px-4 border-b">{{ quiz.id }}</td>
                         <td class="py-2 px-4 border-b">{{ quiz.title }}</td>
                         <td class="py-2 px-4 border-b">{{ quiz.description }}</td>
@@ -67,68 +67,66 @@
 </template>
 
 <script setup lang="ts">
+// Importações necessárias
+import { ref, onMounted } from 'vue';
+import type { Ref } from 'vue';
+import type { Quiz } from '~/interfaces/quiz';
 
-const runtimeConfig = useRuntimeConfig()
+// Use apenas uma instância de useRuntimeConfig
+const runtimeConfig = useRuntimeConfig();
 
 // Objeto reativo para armazenar os dados do formulário
-import type { Quiz } from '~/interfaces/quiz';
-const quizs: Quiz[] = reactive(
-    [
-        {
-            id: 1,
-            title: "Qual o seu temperamento",
-            description: "Fleumatico, colerico melancolico, sanguineo, flematico",
-            type: "2",
-            body: "Que tal nosso teste de personalidade?",
-            numberOptions: 5,
-            status: '1'
-        },
-        {
-            id: 2,
-            title: "Descubra, qual animal é você",
-            description: "Que tipo de animal você é?",
-            type: "1",
-            body: "Que tal saber que tipo de animal você é seu animal??",
-            numberOptions: 5,
-            status: '1'
-        },
-        {
-            id: 3,
-            title: "Teste, qual país você é",
-            description: "Que tipo de país você é?",
-            type: "1",
-            body: "Que tal saber que tipo de país você é seu animal??",
-            numberOptions: 5,
-            status: '1'
-        },
-    ]);
+const quizzes: Ref<Quiz[]> = ref([]);
 
+// Função para buscar os quizzes
+import { $fetch } from 'ofetch'
+const fetchQuizzes = async () => {
+  console.log("mounted");
+  
+  try {
+    const apiUrl = `${runtimeConfig.public.apiBaseUrl}/quiz`;
+    const response = await $fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        // Adicione headers de autenticação se necessário
+      },
+    });
+    
+    // Tratativa para se a API retornar o array diretamente
+    if (response && Array.isArray(response)) {
+        quizzes.value = response;
+    } else if (response.data && Array.isArray(response.data)) {
+        // Ou se a API retorna um objeto com uma propriedade 'data' contendo o array
+      quizzes.value = response.data;
+    }
+  } catch (error) {
+    console.error("Exception:", error);
+  } finally {
+    // console.log('Requisição finalizada');
+  }
+};
 
-// const { data } = await useFetch('/api/quizzes', {
-//     baseURL: runtimeConfig.public.apiBase,
-//     headers: {
-//         Authorization: `Bearer ${useCookie('token').value}`
-//     }
-// })
-
+// Chamada da função fetchQuizzes quando o componente é montado
+onMounted(fetchQuizzes);
 
 // Emits para comunicar ações ao componente pai
 const emit = defineEmits(['edit', 'delete', 'preview']);
 
 // Métodos para lidar com as ações
 const onEdit = () => {
-//   emit('edit', props.item);
+    //   emit('edit', props.item);
 };
 
-const onPreview = (id:number) => {
+const onPreview = (id: number) => {
     useRouter().push(`/quiz/${id}`)
-//   emit('preview', props.item);
+    //   emit('preview', props.item);
 };
 
 const confirmDelete = () => {
-  if (confirm(`Tem certeza que deseja excluir este item?`)) {
-    // emit('delete', props.item.id);
-  }
+    if (confirm(`Tem certeza que deseja excluir este item?`)) {
+        // emit('delete', props.item.id);
+    }
 };
 
 </script>
