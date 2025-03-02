@@ -1,0 +1,78 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+
+Enum funcionatrios_genero {
+  "Não informado"   
+  Masculino
+  Feminino
+}
+
+Enum funcionatrios_estado_civil{
+  Solteiro
+  Casado
+  Divorciado
+  Viúvo
+  Separado
+  "União Estável"
+}
+
+Enum funcionatrios_tipo_contrato {
+  CLT   
+  PJ
+  "Estágio"
+  "Autônomo"
+  "Temporário"
+}
+
+Enum funcionatrios_status {
+  Ativo
+  Inativo
+}
+
+
+Table funcionarios {
+  id id [primary key]
+  nome_completo varchar(191) [not null]
+  apelido varchar(191)
+  cfp varchar(14) [not null]
+  data_nascimento date [not null]
+  genero funcionatrios_genero [default:"Não informado"]
+  estado_civil varchar [default:"Solteiro"]
+  telefone VARCHAR(20)
+  nome_pai_mae varchar(255)
+  email VARCHAR(150) UNIQUE
+  status funcionatrios_status [default: "Ativo"]
+  // normalizar - criar tabela de cargo
+  cargo_id bigint 
+  // tabela de endereco (normalizar depois se der tempo)
+  endereco TEXT [not null]
+  cep CHAR(8)
+  cidade VARCHAR(100)
+  estado CHAR(2)
+  departamento VARCHAR(100)
+  data_admissao DATE [not null]
+  tipo_contrato funcionatrios_tipo_contrato [default: "CLT", not null]
+  // informações sensíveis
+  salario DECIMAL(10,2) [not null]
+  banco VARCHAR(100)
+  agencia VARCHAR(10)
+  conta VARCHAR(20)
+  pis CHAR(11) UNIQUE
+  ctps VARCHAR(20) UNIQUE
+  data_rescisao DATE [default: null]
+  motivo_rescisao TEXT [default: null]
+ 
+}
+
+Table cargo {
+  id integer [primary key]
+  nome varchar(100) [not null]
+  descricao text [note: 'descrição do cargo']
+  status varchar
+}
+
+
+
+Ref: funcionarios.cargo_id > cargo.id // many-to-one
+
