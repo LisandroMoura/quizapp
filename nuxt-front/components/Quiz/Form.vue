@@ -152,7 +152,7 @@ const optionsStatus = [
   { label: "Inativo", value: "9" },
 ];
 
-import { useQuizForm } from '~/composables/useQuizForm';
+import { useQuizForm } from '~/composables/useQuizService';
 
 const { form, isSubmitting, error, createQuiz, resetForm } = useQuizForm();
 

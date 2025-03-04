@@ -73,56 +73,60 @@
         <div class="container mx-auto pt-6">
             <table class="min-w-full bg-white border border-gray-200">
                 <thead>
-                  <tr>
-                    <th class="py-2 px-4 border-b w-16">ID</th>
-                    <th class="py-2 px-4 border-b w-48">Title</th>
-                    <th class="py-2 px-4 border-b w-96 truncate">Description</th>
-                    <th class="py-2 px-4 border-b w-24">Status</th>
-                    <th class="py-2 px-4 border-b w-40 text-center">Action</th>
-                  </tr>
+                    <tr>
+                        <th class="py-2 px-4 border-b w-16">ID</th>
+                        <th class="py-2 px-4 border-b w-48">Title</th>
+                        <th class="py-2 px-4 border-b w-96 truncate">Description</th>
+                        <th class="py-2 px-4 border-b w-24">Status</th>
+                        <th class="py-2 px-4 border-b w-40 text-center">Action</th>
+                    </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="quiz in quizzes" :key="quiz.id" class="hover:bg-gray-100">
-                    <td class="py-2 px-4 border-b text-center">{{ quiz.id }}</td>
-                    <td class="py-2 px-4 border-b truncate">{{ quiz.title }}</td>
-                    <td class="py-2 px-4 border-b truncate max-w-[24rem]">{{ quiz.description }}</td>
-                    <td class="py-2 px-4 border-b text-center">{{ quiz.status }}</td>
-                    <td class="py-2 px-4 border-b text-center">
-                      <div class="flex justify-center space-x-2">
-                        <!-- Editar -->
-                        <button @click="onEdit(quiz.id)"
-                          class="p-2 text-blue-500 hover:text-blue-700 hover:bg-blue-100 rounded transition focus:ring-2 focus:ring-blue-500">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                          </svg>
-                        </button>
-              
-                        <!-- Visualizar -->
-                        <button @click="onPreview(quiz.id)"
-                          class="p-2 text-green-500 hover:text-green-700 hover:bg-green-100 rounded transition focus:ring-2 focus:ring-green-500">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                            <path fill-rule="evenodd"
-                              d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                              clip-rule="evenodd" />
-                          </svg>
-                        </button>
-              
-                        <!-- Excluir -->
-                        <button @click="confirmDelete(quiz.id)"
-                          class="p-2 text-red-500 hover:text-red-700 hover:bg-red-100 rounded transition focus:ring-2 focus:ring-red-500">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                              d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                              clip-rule="evenodd" />
-                          </svg>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+                    <tr v-for="quiz in quizzes" :key="quiz.id" class="hover:bg-gray-100">
+                        <td class="py-2 px-4 border-b text-center">{{ quiz.id }}</td>
+                        <td class="py-2 px-4 border-b truncate">{{ quiz.title }}</td>
+                        <td class="py-2 px-4 border-b truncate max-w-[24rem]">{{ quiz.description }}</td>
+                        <td class="py-2 px-4 border-b text-center">{{ quiz.status }}</td>
+                        <td class="py-2 px-4 border-b text-center">
+                            <div class="flex justify-center space-x-2">
+                                <!-- Editar -->
+                                <button @click="onEdit(quiz.id)"
+                                    class="p-2 text-blue-500 hover:text-blue-700 hover:bg-blue-100 rounded transition focus:ring-2 focus:ring-blue-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path
+                                            d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                    </svg>
+                                </button>
+
+                                <!-- Visualizar -->
+                                <button @click="onPreview(quiz.id)"
+                                    class="p-2 text-green-500 hover:text-green-700 hover:bg-green-100 rounded transition focus:ring-2 focus:ring-green-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                        <path fill-rule="evenodd"
+                                            d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+
+                                <!-- Excluir -->
+                                <button @click="confirmDelete(quiz.id)"
+                                    class="p-2 text-red-500 hover:text-red-700 hover:bg-red-100 rounded transition focus:ring-2 focus:ring-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
-              </table>
-               
+            </table>
+
         </div>
     </div>
 </template>
@@ -144,10 +148,15 @@ const searchTerm: Ref<string> = ref('');
 
 // Função para buscar os quizzes
 import { $fetch } from 'ofetch'
-import Id from './[id].vue';
+
+import { useQuizForm } from '~/composables/useQuizService';
+
+const { form, isSubmitting, error, deleteQuiz } = useQuizForm();
+
 const fetchQuizzes = async () => {
 
     try {
+
         const apiUrl = `${runtimeConfig.public.apiBaseUrl}/quiz`;
         const response = await $fetch(apiUrl, {
             method: 'GET',
@@ -172,7 +181,7 @@ const fetchQuizzes = async () => {
 };
 
 // Flag para controlar a visibilidade do modal de configuração
-const showCreateModal:Ref<boolean> = ref(false);
+const showCreateModal: Ref<boolean> = ref(false);
 
 // Chamada da função fetchQuizzes quando o componente é montado
 onMounted(fetchQuizzes);
@@ -189,32 +198,44 @@ const onPreview = (id: number) => {
 
 // Função para confirmar a exclusão
 const confirmDelete = async (id: number) => {
-    if (!confirm(`Tem certeza que deseja excluir este item?`)) {
-        return 
-    }
+    // Use a more user-friendly confirmation dialog
+    const isConfirmed = await useConfirmDialog({
+        title: 'Confirmar Exclusão',
+        message: 'Você tem certeza que deseja excluir este quiz? Esta ação não pode ser desfeita.',
+        confirmText: 'Sim, excluir',
+        cancelText: 'Cancelar'
+    });
+
+    if (!isConfirmed) return;
+
     try {
         // fazer a requisição
-        const apiUrl = `${runtimeConfig.public.apiBaseUrl}/quiz/${id}`;
-        const response = await $fetch(apiUrl,{
-            method:'DELETE'
-        })
+        const response = await deleteQuiz(id);
 
-        // validar a execução
-        
         // notificar o retorno
-        console.log(response)
-        alert(response.message)
+        if (response.success) {
+            alert(response.message);
+            // Atualização otimista ao invés de refetch completo
+            quizzes.value = quizzes.value.filter(q => q.id !== id)
+            // await fetchQuizzes()
+        }
+        else {
+            throw new Error('Erro ao excluir o quiz')
+        }
 
-        // refresh
-        await fetchQuizzes()
-        // refreshNuxtData(quizzes)
 
     } catch (error) {
-        
-    } finally{
+
+    } finally {
 
     }
 };
+
+const useConfirmDialog = async (options: any) => {
+    // Implement a promise-based confirmation dialog
+    return confirm(options.message);
+};
+
 
 // Função para abrir o modal de configuração
 const openConfigModal = () => {

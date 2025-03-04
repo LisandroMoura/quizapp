@@ -3,6 +3,9 @@ import type { Quiz } from "@/interfaces/quiz";
 import { useRuntimeConfig } from "nuxt/app";
 import { ofetch } from "ofetch";
 
+
+
+
 /**
  * Tipagem para dados do formulário
  * Omit é usado para omitir a propriedade id do tipo Quiz
@@ -40,13 +43,49 @@ export const useQuizForm = () => {
     numberOptions: 5,
     status: "",
   });
+  
+  // função para obter os headers
+  const getHeaders = async () => {
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${useAuth().token}`
+    };
+  };
+
+  // função para obter o token
+  const useAuth = () => {
+    const token = useCookie("token") || "token provisório";
+    return {
+      token: token.value,
+    };
+  };
 
   // criar os estados de loading e de erro
   const isSubmitting = ref(false);
   const error = ref<string | null>(null);
 
-  // criar o metodo de create
+  const deleteQuiz = async (quizId: number): Promise<ApiResponse<Object>> => {
 
+    // criar a variavel de configuração
+    const config = useRuntimeConfig();
+
+    // definição de url da api
+    const apiUrl = `${config.public.apiBaseUrl}/quiz/${quizId}`;
+
+    // iniciar o loading
+    isSubmitting.value = true;
+
+    // limpar o erro
+    error.value = null;
+
+    return $fetch(apiUrl, {
+      method: 'DELETE',
+      headers: await getHeaders(),
+    })
+
+    // headers: await this.getHeaders(),
+  }
+  // metodo de create
   const createQuiz = async (): Promise<ApiResponse<Quiz>> => {
     // criar a variavel de configuração
     const config = useRuntimeConfig();
@@ -74,9 +113,7 @@ export const useQuizForm = () => {
       // realizar a requisição
       const response = await ofetch<ApiResponse<Quiz>>(apiUrl, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: await getHeaders(),
         body: formDataWidoutId,
         retry: 1,
         timeout: 10000,
@@ -135,6 +172,7 @@ export const useQuizForm = () => {
     isSubmitting,
     error,
     createQuiz,
+    deleteQuiz,
     resetForm,
   };
 };
