@@ -109,7 +109,7 @@
                         </button>
               
                         <!-- Excluir -->
-                        <button @click="confirmDelete"
+                        <button @click="confirmDelete(quiz.id)"
                           class="p-2 text-red-500 hover:text-red-700 hover:bg-red-100 rounded transition focus:ring-2 focus:ring-red-500">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd"
@@ -139,11 +139,12 @@ const runtimeConfig = useRuntimeConfig();
 // Objeto reativo para armazenar os dados do formulário
 const quizzes: Ref<Quiz[]> = ref([]);
 
-
-const searchTerm = ref('');
+// Campo de busca
+const searchTerm: Ref<string> = ref('');
 
 // Função para buscar os quizzes
 import { $fetch } from 'ofetch'
+import Id from './[id].vue';
 const fetchQuizzes = async () => {
 
     try {
@@ -170,30 +171,48 @@ const fetchQuizzes = async () => {
     }
 };
 
-const showCreateModal = ref(false);
-
+// Flag para controlar a visibilidade do modal de configuração
+const showCreateModal:Ref<boolean> = ref(false);
 
 // Chamada da função fetchQuizzes quando o componente é montado
 onMounted(fetchQuizzes);
 
-// Emits para comunicar ações ao componente pai
-const emit = defineEmits(['edit', 'delete', 'preview']);
 
 // Métodos para lidar com as ações
 const onEdit = (id: number) => {
     useRouter().push(`/quiz/edit/${id}`)
-    //   emit('edit', props.item);
 };
 
 const onPreview = (id: number) => {
     useRouter().push(`/quiz/${id}`)
-    //   emit('preview', props.item);
 };
 
 // Função para confirmar a exclusão
-const confirmDelete = () => {
-    if (confirm(`Tem certeza que deseja excluir este item?`)) {
-        // emit('delete', props.item.id);
+const confirmDelete = async (id: number) => {
+    if (!confirm(`Tem certeza que deseja excluir este item?`)) {
+        return 
+    }
+    try {
+        // fazer a requisição
+        const apiUrl = `${runtimeConfig.public.apiBaseUrl}/quiz/${id}`;
+        const response = await $fetch(apiUrl,{
+            method:'DELETE'
+        })
+
+        // validar a execução
+        
+        // notificar o retorno
+        console.log(response)
+        alert(response.message)
+
+        // refresh
+        await fetchQuizzes()
+        // refreshNuxtData(quizzes)
+
+    } catch (error) {
+        
+    } finally{
+
     }
 };
 
