@@ -11,7 +11,7 @@
         <!-- Card 1 -->
         <div class="bg-indigo-50 overflow-hidden shadow rounded-lg">
           <div class="p-5">
-            <QuizForm action="view" desription="visualização de registro" /> 
+            <QuizForm action="create" desription="visualização de registro" /> 
           </div>
         </div>
       </div>
