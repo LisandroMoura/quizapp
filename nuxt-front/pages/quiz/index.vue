@@ -4,7 +4,58 @@
         <div class="bg-white shadow-sm rounded-lg p-6">
             <h2 class="text-xl font-semibold mb-4">Cadastro de Quiz</h2>
             <p class="text-gray-600">Relação de quiz cadastrados no sistema.</p>
+            <div class="flex items-center space-x-4">
+                <!-- Contador de Registros -->
+                <div class="flex items-center bg-gray-100 px-3 py-2 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-600" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                    </svg>
+                    <span class="text-gray-700 font-medium">Total: {{ quizzes.length }}</span>
+                </div>
+
+                <!-- Campo de Busca -->
+                <div class="flex">
+                    <input type="text" v-model="searchTerm" placeholder="Buscar quiz..."
+                        class="border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <button @click="searchQuizzes"
+                        class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Botão de Configurações -->
+                <button @click="openConfigModal"
+                    class="text-gray-600 hover:bg-gray-100 p-2 rounded-full transition-colors" title="Configurações">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </button>
+
+                <!-- Botão de Novo Quiz -->
+                <NuxtLink to="/quiz/add"
+                    class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-colors duration-200 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Novo Quiz
+                </NuxtLink>
+            </div>
+
         </div>
+
         <div class="container mx-auto pt-6">
             <table class="min-w-full bg-white border border-gray-200">
                 <thead>
@@ -78,33 +129,39 @@ const runtimeConfig = useRuntimeConfig();
 // Objeto reativo para armazenar os dados do formulário
 const quizzes: Ref<Quiz[]> = ref([]);
 
+
+const searchTerm = ref('');
+
 // Função para buscar os quizzes
 import { $fetch } from 'ofetch'
 const fetchQuizzes = async () => {
-  
-  try {
-    const apiUrl = `${runtimeConfig.public.apiBaseUrl}/quiz`;
-    const response = await $fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        // Adicione headers de autenticação se necessário
-      },
-    });
-    
-    // Tratativa para se a API retornar o array diretamente
-    if (response && Array.isArray(response)) {
-        quizzes.value = response;
-    } else if (response.data && Array.isArray(response.data)) {
-        // Ou se a API retorna um objeto com uma propriedade 'data' contendo o array
-      quizzes.value = response.data;
+
+    try {
+        const apiUrl = `${runtimeConfig.public.apiBaseUrl}/quiz`;
+        const response = await $fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // Adicione headers de autenticação se necessário
+            },
+        });
+
+        // Tratativa para se a API retornar o array diretamente
+        if (response && Array.isArray(response)) {
+            quizzes.value = response;
+        } else if (response.data && Array.isArray(response.data)) {
+            // Ou se a API retorna um objeto com uma propriedade 'data' contendo o array
+            quizzes.value = response.data;
+        }
+    } catch (error) {
+        console.error("Exception:", error);
+    } finally {
+        // console.log('Requisição finalizada');
     }
-  } catch (error) {
-    console.error("Exception:", error);
-  } finally {
-    // console.log('Requisição finalizada');
-  }
 };
+
+const showCreateModal = ref(false);
+
 
 // Chamada da função fetchQuizzes quando o componente é montado
 onMounted(fetchQuizzes);
@@ -126,6 +183,18 @@ const confirmDelete = () => {
     if (confirm(`Tem certeza que deseja excluir este item?`)) {
         // emit('delete', props.item.id);
     }
+};
+
+const openConfigModal = () => {
+    showCreateModal.value = true;
+};
+
+const closeConfigModal = () => {
+    showCreateModal.value = false;
+};
+
+const searchQuizzes = () => {
+    // fetchQuizzes();
 };
 
 </script>

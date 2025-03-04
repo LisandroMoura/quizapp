@@ -160,14 +160,12 @@ const submitForm = async () => {
   try {
     const response = await createQuiz();
 
-    console.log(response);
-
     if (response.success) {
       navigateTo('/quiz');
     }
     resetForm();
   } catch (error) {
-    console.error(error);
+    // console.error(error);
   }
 };
 </script>

@@ -19,6 +19,11 @@ interface ApiResponse<T> {
   status: number;
   message: string;
   success: boolean;
+  error?: {
+    statusCode: number;
+    message: string;
+    details?: any;
+  };
 }
 
 /**
@@ -42,17 +47,16 @@ export const useQuizForm = () => {
 
   // criar o metodo de create
 
-
   const createQuiz = async (): Promise<ApiResponse<Quiz>> => {
     // criar a variavel de configuração
     const config = useRuntimeConfig();
-  
+
     // definição de url da api
     const apiUrl = `${config.public.apiBaseUrl}/quiz`;
 
     // iniciar o loading
     isSubmitting.value = true;
-  
+
     // limpar o erro
     error.value = null;
 
@@ -65,7 +69,7 @@ export const useQuizForm = () => {
 
       // criar o objeto de envio sem o ID
       // usando a desestruturação de objeto e o operador rest (...)
-      const {id, ...formDataWidoutId} = form;
+      const { id, ...formDataWidoutId } = form;
 
       // realizar a requisição
       const response = await ofetch<ApiResponse<Quiz>>(apiUrl, {
@@ -79,32 +83,36 @@ export const useQuizForm = () => {
       });
 
       // Atualiza o formulário com os dados da resposta
-      if (response.data){
+      if (response.data) {
         Object.assign(form, response.data);
       }
 
       return response;
-
-    } catch (err: any) {
-      const errorMessage = err.message || 'Erro desconhecido ao criar quiz';
-      error.value = errorMessage;
       
+    } catch (err: any) {
+      const errorMessage = err.message || "Erro desconhecido ao criar quiz";
+      let statusCode = err.status || 500;
+      error.value = errorMessage;
+
+      if (err.status === 400) statusCode = `Dados inválidos - ${err.status}`;
+      if (err.status === 404) statusCode = `Endpoint não encontrado - ${err.status}`;
+      if (err.status === 401) statusCode = `Autenticação necessária - ${err.status} `;
+      if (err.status === 500) statusCode = `Erro interno no servidor - ${err.status}`;
+
       // Log estruturado de erro
       console.error({
-        action: 'createQuiz',
+        action: "createQuiz",
         error: errorMessage,
-        status: err.status || 500,
-        data: { ...form }
-      }); 
+        status: statusCode,
+        data: { ...form },
+      });
 
       throw new Error(`Falha ao criar quiz: ${errorMessage}`);
-
-
     } finally {
       // desligar o loading
       isSubmitting.value = false;
     }
-  }
+  };
 
   /**
    * Reseta o formulário para os valores iniciais
@@ -127,6 +135,6 @@ export const useQuizForm = () => {
     isSubmitting,
     error,
     createQuiz,
-    resetForm
+    resetForm,
   };
 };
