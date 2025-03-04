@@ -22,10 +22,12 @@ class QuizController extends Controller
     public function store(Request $request)
     {
         //
-        $cargo = Quiz::create($request->all());
+        $quiz = Quiz::create($request->all());
 
-        // retornar os dados 
-        return response()->json(compact('cargo'), 201);
+        // retornar os dados
+        return response()->json([
+            "success" => true,
+        ],201);
     }
 
     /**
